@@ -3,6 +3,8 @@ import { Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hook/useForm'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { startCreatingUserWithEmailPassword } from '../../store/auth/thunks'
 
 const formData = {
   email: '',
@@ -18,6 +20,7 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+  const dispatch = useDispatch();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { 
@@ -27,8 +30,9 @@ export const RegisterPage = () => {
 
   const onSubmit =( event )=>{
     event.preventDefault();
-    console.log(formState);
-    setFormSubmitted(true)
+    setFormSubmitted(true);
+    if(!isFormValid) return
+    dispatch( startCreatingUserWithEmailPassword( formState ));
   }
 
   return (
@@ -46,7 +50,7 @@ export const RegisterPage = () => {
                 onChange={onInputChange}
                 name='displayName'
                 error={!!displayNameValid && formSubmitted}
-                helperText={ displayNameValid }
+                helperText={ formSubmitted && displayNameValid }
               />
             </Grid>
             <Grid item xs={12} sx={{mt:2}}>
@@ -59,7 +63,7 @@ export const RegisterPage = () => {
                 onChange={onInputChange}
                 name='email'
                 error={!!emailValid && formSubmitted}
-                helperText={ emailValid }
+                helperText={ formSubmitted && emailValid }
               />
             </Grid>
 
@@ -73,7 +77,7 @@ export const RegisterPage = () => {
                 onChange={onInputChange}
                 name='password'
                 error={!!passwordValid && formSubmitted}
-                helperText={ passwordValid }
+                helperText={ formSubmitted && passwordValid }
               />
             </Grid>
 
