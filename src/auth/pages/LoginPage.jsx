@@ -7,16 +7,18 @@ import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth
 import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material'
 import { Google } from '@mui/icons-material'
 
+const formData = {
+  email: 'gringo@google.com',
+  password: '123456'
+}
+
 export const LoginPage = () => {
 
   const dispatch = useDispatch();
 
   const { status, errorMessage } = useSelector(state=>state.auth)
 
-  const { email, password, onInputChange, formState } = useForm({
-     email: 'gringo@google.com',
-     password: '123456'
-  })
+  const { email, password, onInputChange, formState } = useForm( formData )
 
   const isAuthenticating = useMemo(()=> status==='checking', [status]);
 
