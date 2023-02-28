@@ -4,7 +4,7 @@ import { SaveOutlined, UploadOutlined } from "@mui/icons-material"
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 import { useForm } from "../../hook/useForm"
 import { setActiveNote } from "../../store/journal/journalSlice"
-import { startSaveNote } from "../../store/journal/thunks"
+import { startSaveNote, startUploadingFiles } from "../../store/journal/thunks"
 import { ImageGallery } from "../components/ImageGallery"
 
 import Swal from "sweetalert2"
@@ -40,9 +40,7 @@ export const NoteView = () => {
 
     const onFileInputChange = ({ target }) => {
         if(target.files.length === 0) return
-
-        console.log('subiendo archivos');
-        // dispatch( startUploadingFiles( target.files ));
+        dispatch( startUploadingFiles( target.files ));
     }
     
     return (

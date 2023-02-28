@@ -1,5 +1,6 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
+import { fileUpload } from "../../helpers/fileUpload";
 import { loadNotes } from "../../helpers/loadNotes";
 import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from "./journalSlice";
 
@@ -36,9 +37,9 @@ export const startLoadingNotes = ()=> {
 }
 
 export const startSaveNote = () => {
-    return async (disptach, getState) => {
+    return async (dispatch, getState) => {
 
-        disptach( setSaving() )
+        dispatch( setSaving() )
 
         const { uid } = getState().auth;
         const { active } = getState().journal;
@@ -49,7 +50,15 @@ export const startSaveNote = () => {
         const docRef = doc( FirebaseDB, `${uid}/journal/notes/${active.id}` );
         await setDoc(docRef, noteToFireStore, { merge: true } );
 
-        disptach( updateNote( active.id ));
+        dispatch( updateNote( active.id ));
     
     }   
+}
+
+export const startUploadingFiles = ( files = [] ) => {
+    return async (dispatch) => {
+        dispatch( setSaving() );
+
+        await fileUpload( files[0] );
+    }
 }
