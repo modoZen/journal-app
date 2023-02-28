@@ -10,7 +10,7 @@ const initialState = {
     //     title: '',
     //     body: '',
     //     date: 1234567,
-    //     imagesUrls: []
+    //     imageUrls: []
     // }
 }
 
@@ -43,12 +43,16 @@ export const journalSlice = createSlice({
 
             state.messageSaved = `${ state.active.title} actualizada correctamente`;
         },
+        setPhotosToActiveNote: (state, action ) => {
+            state.active.imageUrls = [...state.active.imageUrls, ...action.payload ];
+            state.isSaving = false;
+        },
         deleteNoteById: (state, action) => {
 
         },
     }
 })
 
-export const { savingNewNote, addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, deleteNoteById } = journalSlice.actions;
+export const { savingNewNote, addNewEmptyNote, setActiveNote, setNotes, setSaving, updateNote, setPhotosToActiveNote, deleteNoteById } = journalSlice.actions;
 
 export const journalReducer = journalSlice.reducer;
