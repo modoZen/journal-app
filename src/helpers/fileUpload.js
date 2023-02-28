@@ -2,7 +2,7 @@
 export const fileUpload = async ( file ) => {
     if( !file ) throw new Error('No tenemos ningun archivo a subir');
 
-    const cloudUrl = 'https://api.cloudinary.com/v1_1/cursos-lml/upload';
+    const cloudUrl = import.meta.env.VITE_cloudUrl;
     const formData = new FormData();
     formData.append('upload_preset', 'react-journal');
     formData.append('file', file);
