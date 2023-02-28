@@ -54,7 +54,9 @@ export const journalSlice = createSlice({
             state.active = null;
         },
         deleteNoteById: (state, action) => {
-
+            const index = state.notes.findIndex( note => note.id === action.payload)
+            state.notes.splice(index, 1);
+            state.active = null;
         },
     }
 })

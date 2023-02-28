@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { SaveOutlined, UploadOutlined } from "@mui/icons-material"
+import { DeleteOutline, SaveOutlined, UploadOutlined } from "@mui/icons-material"
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 import { useForm } from "../../hook/useForm"
 import { setActiveNote } from "../../store/journal/journalSlice"
-import { startSaveNote, startUploadingFiles } from "../../store/journal/thunks"
+import { startDeletingNote, startSaveNote, startUploadingFiles } from "../../store/journal/thunks"
 import { ImageGallery } from "../components/ImageGallery"
 
 import Swal from "sweetalert2"
@@ -41,6 +41,29 @@ export const NoteView = () => {
     const onFileInputChange = ({ target }) => {
         if(target.files.length === 0) return
         dispatch( startUploadingFiles( target.files ));
+    }
+
+    const onDelete = () => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No se podrá revertir esta acción",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+       
+              dispatch(startDeletingNote());
+              
+              Swal.fire(
+                'Eliminado',
+                'Tu archivo ha sido eliminado',
+                'success'
+              )
+            }
+          })
     }
     
     return (
@@ -100,6 +123,15 @@ export const NoteView = () => {
                     value={body}
                     onChange={onInputChange}
                 />
+            </Grid>
+
+            <Grid container justifyContent='end'>
+                <Button
+                    onClick={ onDelete }
+                    color="error"
+                >
+                    <DeleteOutline />
+                </Button>
             </Grid>
 
             {/* Image gallery */}
